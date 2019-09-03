@@ -69,6 +69,7 @@ while True:
         json.dump(updated_data, comment_file, indent=4)
         comment_file.truncate()
 
+        print "Remaining: %d" % len(updated_data['comments']['unprocessed'])
         print "Processed: {} Saved: {} Deleted: {}".format(
             len(existing_data['comments']['unprocessed'])
             - len(updated_data['comments']['unprocessed']),
