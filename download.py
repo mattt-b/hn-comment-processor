@@ -40,6 +40,7 @@ if highest_current_id <= highest_previous_id:
 updated_data = copy.deepcopy(existing_data)
 num_new_comments = 0
 html_parser = HTMLParser.HTMLParser()
+invalid_comments = [] # some comments return nothing from the API for unknown reason
 for comment_id in comment_ids:
     if highest_previous_id is not None:
         if comment_id < highest_previous_id:
@@ -52,6 +53,11 @@ for comment_id in comment_ids:
         "https://hacker-news.firebaseio.com/v0/item/{}.json".format(comment_id)
     )
     comment = json.loads(request.read())
+
+    if comment is None:
+        invalid_comments.append(comment_id)
+        continue
+
     if comment.get('deleted'):
         continue
 
@@ -66,4 +72,6 @@ comment_file.seek(0)
 json.dump(updated_data, comment_file, indent=4)
 comment_file.truncate()
 
+for comment_id in invalid_comments:
+    print "Error on %d must check manually" % comment_id
 print "%d new comments" % num_new_comments
