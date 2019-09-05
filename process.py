@@ -64,18 +64,24 @@ while True:
 
     elif command == 'f':
         updated_data['comments']['unprocessed'].append(comment)
-
-        comment_file.seek(0)
-        json.dump(updated_data, comment_file, indent=4)
-        comment_file.truncate()
-
-        print "Remaining: %d" % len(updated_data['comments']['unprocessed'])
-        print "Processed: {} Saved: {} Deleted: {}".format(
-            len(existing_data['comments']['unprocessed'])
-            - len(updated_data['comments']['unprocessed']),
-            len(updated_data['comments']['saved'])
-            - len(existing_data['comments']['saved']),
-            len(updated_data['comments']['deleted'])
-            - len(existing_data['comments']['deleted']),
-        )
         break
+
+comment_file.seek(0)
+json.dump(updated_data, comment_file, indent=4)
+comment_file.truncate()
+
+print "Total-"
+print "Remaining: {}, Saved: {}, Deleted: {}".format(
+    len(updated_data['comments']['unprocessed']),
+    len(updated_data['comments']['saved']),
+    len(updated_data['comments']['deleted']),
+)
+print "Session-"
+print "Processed: {} Saved: {} Deleted: {}".format(
+    len(existing_data['comments']['unprocessed'])
+    - len(updated_data['comments']['unprocessed']),
+    len(updated_data['comments']['saved'])
+    - len(existing_data['comments']['saved']),
+    len(updated_data['comments']['deleted'])
+    - len(existing_data['comments']['deleted']),
+)
